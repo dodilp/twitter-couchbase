@@ -1,0 +1,89 @@
+<html>
+<head>
+<style type="text/css">
+* {
+  margin:  0;
+  padding: 0;
+}
+div#mytagcloud {
+  width: 100%;
+}
+ul.tagcloud-list {
+  border: 1px solid #000;
+  font-size: 100%;
+  font-weight: bold;
+  font-family: "Arial", "sans-self";
+  padding: 2px;
+  margin: 10px;
+}
+li.tagcloud-base {
+  font-size: 36px;
+  display: inline;
+}
+a.tagcloud-anchor {
+  text-decoration: none;
+}
+a.tagcloud-ealiest {
+  color: red;
+}
+a.tagcloud-earlier {
+  color: black;
+}
+a.tagcloud-later {
+  color: blue;
+}
+a.tagcloud-latest {
+  color: #00f;
+}
+</style>
+<script type="text/javascript" src="tagcloud.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+var url = 'http://127.0.0.1:8092/default/_design/dev_hashtags/_view/hashtagsByName?stale=false&group_level=1&connection_timeout=60000';
+var tc = TagCloud.create();
+var tags = null;
+
+//XMLHttp Request
+var xhr = new XMLHttpRequest();
+xhr.overrideMimeType("application/json");
+xhr.open("GET", url, false);
+xhr.send(null);
+var data = $.parseJSON(xhr.responseText);
+var tags = data.rows;
+//alert(tags.length);
+
+for(i=0;i<tags.length;i++)
+{
+	var itemkey = tags[i].key;
+        var itemval = tags[i].value;
+	var currentDate = Date();
+	var parsedDate = Date.parse(currentDate);
+
+	if(itemval > 0){
+		tc.add(itemkey, itemval + 1, null, parsedDate); 
+        }
+}
+
+tc.loadEffector('CountSize').base(14).range(10);
+tc.loadEffector('DateTimeColor');
+tc.loadEffector('Alphabetize');
+
+function setup() {
+  tc.setup('mytagcloud');
+}
+
+function search() {
+  var word = document.getElementById('search').value;
+  tc.searchAndDisplay('mytagcloud', word);
+}
+</script>
+</head>
+<body onload="setup();">
+<h1>TagCloud Sample</h1>
+<div id="mytagcloud"></div>
+<div style="margin:5px;">
+<input type="text" size="50" id="search" onkeyup="search(this.value)"/><br />
+</div>
+</body>
+</html>
+

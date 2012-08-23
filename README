@@ -1,0 +1,35 @@
+Twitter Tag Cloud 
+=================
+This application captures tweets from twitter, stores it in Couchbase Server and generates a tag cloud out of the keywords. 
+
+After installing Couchbase Server 2.0 and doing the manual steps in the default bucket, run tstream.py (with your twitter API creds).
+Load tagcloud.html to render a tagcloud out of the data collected.
+
+Pre-requisites:
+---------------
+Twitter Streaming API (Your twitter API credentials need to be entered in tstream.py)
+Tweepy (Python libraries for twitter)
+
+Description
+-----------
+The app is written in Python and consists of mainly two simple components:
+
+tstream.py:
+A small service based on tweepy that implements a StreamListener which inserts incoming data in the Couchbase Server. Here you can also set filter terms. This example uses mostly terms related to “Big Data”.
+
+tagcloud.html:
+A few lines of HTML and JavaScript to render the tag cloud. 
+
+Manual steps
+------------
+You need to create a Couchbase server 2.0 view called hashTagsByName with the following map and reduce functions:
+
+Map function -
+function (doc) {
+  emit(doc.entities.hashtags[0].text.toUpperCase(), null);
+}
+
+Reduce function -
+_count
+
+
