@@ -24,6 +24,7 @@ A few lines of HTML and JavaScript to render the tag cloud.
 Manual steps
 ------------
 (1) Install Couchbase Server Latest Build 
+http://www.couchbase.com/downloads-all#couchbase-server-2-0-builds
 
 (2) Create Views
 You need to create a Couchbase server 2.0 view called hashTagsByName with the following map and reduce functions:
@@ -42,5 +43,5 @@ Reduce function
 _count
 
 (3) Edit tstream.py to modify the Couchbase Database Credentials and Twitter API Keys
-(4) Install all necessary tstream.py dependant libraries such as tweepy, python SDK for Couchbase Server 2.0
+(4) Install all necessary tstream.py dependant libraries such as tweepy, python SDK for Couchbase Server 2.0 (http://www.couchbase.com/develop/python/next)
 (5) Run tweepy.py and use tagcloud.html to view the results. Enjoy! 
