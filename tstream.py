@@ -4,13 +4,23 @@ import hashlib
 import couchbase
 from tweepy.utils import import_simplejson
 
-#Define API keys and database connecion creds
+#Define Database connection creds 
+server = "localhost:8091"
+admin_username = "Administrator"
+admin_password = "zztest"
 
+#Twitter auth stuff
+consumer_key = 'Az2MXuoK84LkN8dkYomwnw'
+consumer_secret = 'y9qyUHmz5ioRA0ZXJN1j7LD71hG99LoEuvhGu4LDtU'
+access_token_key = '227787412-XVyzpZofhDAvXOEd22R7PdSJLxgMKhn0K0ipVzMF'
+access_token_secret = 'yQmalsT4Tw2vitT6PKXpLiu6eIBkfLW0NMiEaBNobvg'
 
+#Define filter terms
+filterTerms = ['bigdata', 'couchbase', 'nosql', 'DataWeek', 'CouchConf']
 
 json = import_simplejson()
 try:
-	cbsclient = couchbase.Server("localhost:8091", "Administrator", "zztest")
+	cbsclient = couchbase.Server(server, admin_username, admin_password); 
 except:
 	print "Cannot find Couchbase Server ... Exiting\n"
 	print "----_Stack Trace_-----\n"
@@ -29,13 +39,6 @@ try:
 except:
 	cbucket = cbsclient['default']
 	print "Using default bucket"
-
-#Twitter auth stuff
-consumer_key = 'Az2MXuoK84LkN8dkYomwnw'
-consumer_secret = 'y9qyUHmz5ioRA0ZXJN1j7LD71hG99LoEuvhGu4LDtU'
-
-access_token_key = '227787412-XVyzpZofhDAvXOEd22R7PdSJLxgMKhn0K0ipVzMF'
-access_token_secret = 'yQmalsT4Tw2vitT6PKXpLiu6eIBkfLW0NMiEaBNobvg'
 
 auth1 = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth1.set_access_token(access_token_key, access_token_secret)
@@ -60,5 +63,4 @@ class StreamListener(tweepy.StreamListener):
 
 l = StreamListener()
 streamer = tweepy.Stream(auth=auth1, listener=l)
-setTerms = ['bigdata', 'couchbase', 'nosql', 'DataWeek', 'CouchConf']
-streamer.filter(track = setTerms)
+streamer.filter(track = filterTerms)
